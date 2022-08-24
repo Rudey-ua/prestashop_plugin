@@ -1,6 +1,6 @@
 <?php
 require_once(\_PS_MODULE_DIR_ . '/mymodule/vendor/autoload.php');
-require_once 'classes/Client.php';
+require_once 'classes/ClientBuilder.php';
 
 use Prestashop\Prestashop\Core\Payment\PaymentOption;
 
@@ -91,7 +91,7 @@ class MyModule extends PaymentModule
     {
         $formAction = $this->context->link->getModuleLink($this->name, 'payment', array(), true);
 
-        $client = new Client();
+        $client = new ClientBuilder();
         $banks = $client->createClient()->getIdealIssuers();
 
         $this->smarty->assign([

@@ -2,32 +2,42 @@
 
 class OrderBuilder
 {
-    public function createOrder($order_id, $issuer, $module_id, $customer_id)
+    private $context;
+    private $module;
+
+    public function __construct()
     {
-        $client = new Client();
+        $this->context = Context::getContext();
+        $this->module = Module::getInstanceByName('mymodule');
+    }
 
-        $context = Context::getContext();
-        $currency = $context->currency->getFields()['iso_code'];
-        $amount = $context->cart->getOrderTotal() * 100;
-        $description = 'Your order №' . $order_id . ' at ' . $context->shop->name;
+    public function getModule()
+    {
+        return $this->module;
+    }
 
-        return $client->createClient()->createOrder(
-            [
-                'merchant_order_id' => (string)$order_id,
-                'currency' => $currency,
-                'amount' => $amount,
-                'description' => $description,
-                'return_url' => 'http://localhost/module/mymodule/validation?id_cart=' . $context->cart->id . '&id_module=' . $module_id . '&id_customer=' . $customer_id,
-                'webhook_url' => 'http://localhost/module/mymodule/webhook',
-                'transactions' => [
-                    [
-                        'payment_method' => 'ideal',
-                        'payment_method_details' => [
-                            'issuer_id' => $issuer
-                        ]
-                    ]
-                ]
-            ]
-        );
+    public function getCurrency()
+    {
+        return $this->context->currency;
+    }
+
+    public function getAmount()
+    {
+        return $this->context->cart->getOrderTotal() * 100;
+    }
+
+    public function getDescription()
+    {
+        return 'Your order №' . $this->getModule()->currentOrder . ' at ' . $this->context->shop->name;
+    }
+
+    public function getCart()
+    {
+        return $this->context->cart;
+    }
+
+    public function getCustomer()
+    {
+        return new Customer($this->getCart()->id_customer);
     }
 }

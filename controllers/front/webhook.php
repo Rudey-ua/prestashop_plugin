@@ -17,7 +17,7 @@ class MymoduleWebhookModuleFrontController extends ModuleFrontController {
 
         if($data['event'] == 'status_changed') {
 
-            $client = new Client();
+            $client = new ClientBuilder();
             $client = $client->createClient();
             $order = $client->getOrder($data['order_id']);
 

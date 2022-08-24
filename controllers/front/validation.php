@@ -6,7 +6,7 @@ class MymoduleValidationModuleFrontController extends ModuleFrontController
 {
     public function postProcess()
     {
-        $client = new Client();
+        $client = new ClientBuilder();
         $client = $client->createClient();
 
         $transaction = $client->getOrder($_GET['order_id']);

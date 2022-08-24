@@ -4,7 +4,7 @@ require_once(\_PS_MODULE_DIR_ . '/mymodule/vendor/autoload.php');
 
 use Ginger\Ginger;
 
-class Client
+class ClientBuilder
 {
     private $apiKey;
     private $endPoint;

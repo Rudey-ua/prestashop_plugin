@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitded1f2bfc6fda7b77d1489391c846c51
 {
     public static $prefixLengthsPsr4 = array (
+        'c' => 
+        array (
+            'classes\\' => 8,
+        ),
         'G' => 
         array (
             'Ginger\\' => 7,
@@ -14,6 +18,10 @@ class ComposerStaticInitded1f2bfc6fda7b77d1489391c846c51
     );
 
     public static $prefixDirsPsr4 = array (
+        'classes\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/classes',
+        ),
         'Ginger\\' => 
         array (
             0 => __DIR__ . '/..' . '/gingerpayments/ginger-php/src',

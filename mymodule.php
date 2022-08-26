@@ -1,7 +1,7 @@
 <?php
 require_once(\_PS_MODULE_DIR_ . '/mymodule/vendor/autoload.php');
-require_once 'classes/ClientBuilder.php';
 
+use classes\ClientBuilder;
 use Prestashop\Prestashop\Core\Payment\PaymentOption;
 
 if (!defined('_PS_VERSION_')) {
@@ -57,31 +57,24 @@ class MyModule extends PaymentModule
 
     public function getContent()
     {
-        $message = '';
-
-        if (Tools::getValue("API_KEY")) {
-            Configuration::updateValue('API_KEY', Tools::getValue("API_KEY"));
+        if (Tools::getValue('API_KEY')) {
+            Configuration::updateValue('API_KEY', Tools::getValue('API_KEY'));
             $message = $this->displayConfirmation($this->l('Settings updated'));
         }
 
-        $API_KEY = Configuration::get('API_KEY');
+        $api_key = Configuration::get('API_KEY');
 
         if(Tools::isSubmit('btnSubmit')){
 
-            if(Tools::getValue('certificate') == 'yes'){
+            $value = Tools::getValue('certificate') == 'yes';
 
-                Configuration::updateValue('caCert', 1);
-
-            }elseif (!Tools::getValue('cert')) {
-
-                Configuration::updateValue('caCert', 0);
-            }
+            Configuration::updateValue('assets', (int)$value);
         }
 
         $this->context->smarty->assign([
-            'API_KEY' => $API_KEY,
-            'message' => $message,
-            'status' => Configuration::get('caCert')
+            'API_KEY' => $api_key,
+            'message' => $message ?? '',
+            'status' => Configuration::get('assets')
         ]);
 
         return $this->fetch("module:mymodule/views/templates/admin/configuration.tpl");
@@ -92,11 +85,11 @@ class MyModule extends PaymentModule
         $formAction = $this->context->link->getModuleLink($this->name, 'payment', array(), true);
 
         $client = new ClientBuilder();
-        $banks = $client->createClient()->getIdealIssuers();
+        $idealIssuers = $client->createClient()->getIdealIssuers();
 
         $this->smarty->assign([
                 'action' => $formAction,
-                'banks' => $banks
+                'idealIssuers' => $idealIssuers
             ]);
 
         $paymentForm = $this->fetch('module:mymodule/views/templates/hook/payment_options.tpl');

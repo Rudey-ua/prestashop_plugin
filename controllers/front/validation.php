@@ -1,6 +1,6 @@
 <?php
-
-require_once 'modules/mymodule/classes/OrderBuilder.php';
+use classes\ClientBuilder;
+use classes\Helper;
 
 class MymoduleValidationModuleFrontController extends ModuleFrontController
 {
@@ -9,33 +9,25 @@ class MymoduleValidationModuleFrontController extends ModuleFrontController
         $client = new ClientBuilder();
         $client = $client->createClient();
 
-        $transaction = $client->getOrder($_GET['order_id']);
+        $gingerOrder = $client->getOrder($_GET['order_id']);
 
-        $purchase_id = $transaction['merchant_order_id'];
-        $order_status = $transaction['status'];
+        $purchase_id = $gingerOrder['merchant_order_id'];
+        $order_status = $gingerOrder['status'];
+
+        $order = new Order($purchase_id);
 
         if($order_status == 'completed')
         {
-            $cart_id = $_GET['id_cart'];
-            $module_id = $_GET['id_module'];
-            $customer_id = $_GET['id_customer'];
-
-            $order = new Order($purchase_id);
-            $order->setCurrentState(2); // Completed
-
-            Tools::redirect('index.php?controller=order-confirmation&id_cart='.$cart_id.'&id_module='.$module_id.'&id_order='.$purchase_id.'&key='.$customer_id);
-        }elseif($order_status == 'error')
-        {
-            $order = new Order($purchase_id);
-            $order->setCurrentState(8); // Error
+            $order->setCurrentState(Helper::STATUSES['completed']);
+            Tools::redirect('index.php?controller=order-confirmation&id_cart='.$_GET['id_cart'].'&id_module='.$_GET['id_module'].'&id_order='.$purchase_id.'&key='.$_GET['id_customer']);
+        }
+            $order->setCurrentState(Helper::STATUSES['error']);
 
             parent::initContent();
-
             $this->context->smarty->assign([
                 'module' => $this->module->name,
             ]);
 
             $this->setTemplate('module:mymodule/views/templates/hook/payment_return.tpl');
-        }
     }
 }

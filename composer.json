@@ -1,4 +1,10 @@
 {
+    "autoload": {
+        "psr-4": {
+            "classes\\": "classes/"
+        }
+    },
+
     "require": {
         "gingerpayments/ginger-php": "^2.2.0"
     },

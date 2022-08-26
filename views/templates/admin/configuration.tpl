@@ -11,15 +11,14 @@
     <div class="form-group">
         <div class="md-checkbox">
             <label>
-                <input type="checkbox"{if {$status} == 1} checked {/if}
-                       value="yes" name="certificate"/>
+                <input type="checkbox"{if {$status} == 1} checked {/if} value="yes" name="certificate"/>
                 <i class="md-checkbox-control"></i>
-                Want to use a caCert?
+                {l s='Want to use a assets?'}
             </label>
         </div>
     </div>
 
     <div class="form-group">
-        <button name="btnSubmit" type="submit" class="btn btn-success">Success</button>
+        <button name="btnSubmit" type="submit" class="btn btn-success">{l s='Success'}</button>
     </div>
 </form>

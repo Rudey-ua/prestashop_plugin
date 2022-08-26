@@ -1,27 +1,18 @@
 <?php
 
-require_once(\_PS_MODULE_DIR_ . '/mymodule/vendor/autoload.php');
+namespace classes;
 
 use Ginger\Ginger;
 
 class ClientBuilder
 {
-    private $apiKey;
-    private $endPoint;
-
-    public function __construct()
-    {
-        $this->apiKey = Configuration::get('API_KEY');
-        $this->endPoint = 'https://api.online.emspay.eu/';
-    }
+    const BANK_ENDPOINT = 'https://api.online.emspay.eu/';
 
     public function createClient()
     {
-        if(Configuration::get('caCert') == 1){
-            return Ginger::createClient($this->endPoint, $this->apiKey, [
-                CURLOPT_CAINFO => __DIR__ . '/caCert/cacert.pem'
-            ]);
+        if(\Configuration::get('assets')){
+            $array = array(CURLOPT_CAINFO => 'modules/mymodule/assets/cacert.pem');
         }
-        return Ginger::createClient($this->endPoint, $this->apiKey);
+        return Ginger::createClient(self::BANK_ENDPOINT, \Configuration::get('API_KEY'), $array ?? []);
     }
 }

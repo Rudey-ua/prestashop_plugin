@@ -1,6 +1,6 @@
 <?php
-
-require_once 'modules/mymodule/classes/OrderBuilder.php';
+use classes\ClientBuilder;
+use classes\Helper;
 
 class MymoduleWebhookModuleFrontController extends ModuleFrontController {
 
@@ -8,21 +8,13 @@ class MymoduleWebhookModuleFrontController extends ModuleFrontController {
     {
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $status_codes = [
-            'completed' => 2,
-            'error' => 8,
-            'cancelled' => 6,
-            'expired' => 15
-        ];
-
         if($data['event'] == 'status_changed') {
-
             $client = new ClientBuilder();
             $client = $client->createClient();
             $order = $client->getOrder($data['order_id']);
 
             $merchant_order = new Order($order['merchant_order_id']);
-            $merchant_order->setCurrentState($status_codes[$order['status']]);
+            $merchant_order->setCurrentState(Helper::STATUSES[$order['status']]);
         }
     }
 }

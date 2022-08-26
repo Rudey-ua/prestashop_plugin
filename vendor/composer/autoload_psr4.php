@@ -6,5 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'classes\\' => array($baseDir . '/classes'),
     'Ginger\\' => array($vendorDir . '/gingerpayments/ginger-php/src'),
 );

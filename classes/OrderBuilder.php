@@ -40,7 +40,7 @@ class OrderBuilder
 
     public function getReturnUrl()
     {
-        return 'http://localhost/module/mymodule/validation?id_cart=' . $this->getCart()->id . '&id_module=' . $this->getModule()->id . '&id_customer=' . $this->getCustomer()->secure_key;
+        return $this->context->link->getmodulelink('mymodule', 'validation', array('id_cart' => (int)$this->getCart()->id, 'id_module' => (int) $this->getModule()->id, 'id_customer' => $this->getCustomer()->secure_key));
     }
 
     public function getModule()
@@ -79,7 +79,7 @@ class OrderBuilder
                 'last_name' => $customer['last_name'],
                 'locale' => mb_strtolower($customer['country_iso'])
             ],
-            'webhook_url' => 'http://localhost/module/mymodule/webhook',
+            'webhook_url' => $this->context->link->getmodulelink('mymodule', 'webhook'),
             'transactions' => [
                 [
                     'payment_method' => 'ideal',

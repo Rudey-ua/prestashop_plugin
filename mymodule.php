@@ -84,8 +84,8 @@ class MyModule extends PaymentModule
     {
         $formAction = $this->context->link->getModuleLink($this->name, 'payment', array(), true);
 
-        $client = new ClientBuilder();
-        $idealIssuers = $client->createClient()->getIdealIssuers();
+        $client = (new ClientBuilder())->createClient();
+        $idealIssuers = $client->getIdealIssuers();
 
         $this->smarty->assign([
                 'action' => $formAction,

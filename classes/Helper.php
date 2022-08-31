@@ -4,7 +4,7 @@ namespace classes;
 
 class Helper
 {
-    public const STATUSES = [
+    public const PAYMENT_STATUSES = [
         'completed' => 2,
         'error' => 8,
         'cancelled' => 6,

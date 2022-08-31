@@ -26,11 +26,11 @@ class MymodulePaymentModuleFrontController extends ModuleFrontController
             $orderBuilder->getCustomer()->secure_key
         );
 
-        $client = new ClientBuilder();
+        $client = (new ClientBuilder())->createClient();
 
-        $merchant_order = $client->createClient()->createOrder($orderBuilder->buildOrder($_POST['issuer']));
+        $ginger_order = $client->createOrder($orderBuilder->buildOrder($_POST['issuer']));
 
-        $payment_url = current($merchant_order['transactions'])['payment_url'];
+        $payment_url = current($ginger_order['transactions'])['payment_url'];
         Tools::redirect($payment_url);
     }
 }

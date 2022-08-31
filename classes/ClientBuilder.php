@@ -10,9 +10,7 @@ class ClientBuilder
 
     public function createClient()
     {
-        if(\Configuration::get('assets')){
-            $array = array(CURLOPT_CAINFO => 'modules/mymodule/assets/cacert.pem');
-        }
-        return Ginger::createClient(self::BANK_ENDPOINT, \Configuration::get('API_KEY'), $array ?? []);
+        return Ginger::createClient( self::BANK_ENDPOINT, \Configuration::get('API_KEY'),
+(\Configuration::get('assets')) ? [ CURLOPT_CAINFO => realpath(_PS_MODULE_DIR_ . 'mymodule/assets/cacert.pem') ] : []);
     }
 }
